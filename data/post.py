@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Post:
     def __init__(
         self,
@@ -12,6 +13,7 @@ class Post:
         num_comments: int,
         created: int,
         embedding: np.ndarray,
+        num_saved: int,
     ):
         self.id = id
         self.title = title
@@ -22,3 +24,5 @@ class Post:
         self.num_comments = num_comments
         self.created = created
         self.embedding = embedding
+        self.num_saved = num_saved
+        self.xy = None

@@ -1,6 +1,9 @@
+import numpy as np
+from sklearn.manifold import TSNE
 from typing import List
 from data.cluster import Cluster
 from data.post import Post
+
 
 def agglomerative_cluster(posts: List[Post], dist_thresh=0.77):
     """keep clustering until dist_thresh is met"""
@@ -36,3 +39,15 @@ def agglomerative_cluster(posts: List[Post], dist_thresh=0.77):
             break
 
     return clusters
+
+
+def assign_tsne_coordinates(posts: List[Post]):
+    """assign tsne coordinates to posts"""
+    X = np.array([p.embedding for p in posts])
+    X_tsne = TSNE(
+        n_components=2, learning_rate="auto", init="random", perplexity=3
+    ).fit_transform(X)
+    max_abs_x = max([abs(coords[0]) for coords in X_tsne])
+    max_abs_y = max([abs(coords[1]) for coords in X_tsne])
+    for i, coords in enumerate(X_tsne):
+        posts[i].xy = [coords[0] / max_abs_x, coords[1] / max_abs_y]
